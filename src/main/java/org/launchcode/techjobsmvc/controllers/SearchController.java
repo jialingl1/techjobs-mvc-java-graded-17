@@ -29,10 +29,13 @@ public class SearchController {
 
     // TODO #3 - Create a handler to process a search request and render the updated search view.
 
+    //params searchType and searchTerm are as presented in search template
+    //Arraylist of jobs to store results.
+
     @PostMapping (value = "results")
     public String displaySearchResults(Model model, @RequestParam String searchType, @RequestParam String searchTerm) {
         ArrayList<Job> jobs;
-        if (searchType.equals("all")) {
+        if (searchType.equals("all") && searchTerm.isEmpty()) {
             jobs = JobData.findAll();
             model.addAttribute("title", "All Jobs");
         } else {
@@ -40,6 +43,7 @@ public class SearchController {
             model.addAttribute("title", "Jobs with " + columnChoices.get(searchType) + ": " + searchTerm);
         }
 
+        model.addAttribute("jobs", jobs);
         model.addAttribute("columns", columnChoices);
 
         return "search";
